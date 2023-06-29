@@ -25,14 +25,16 @@ public class PostController {
     @ResponseBody
     public String viewPostsCreate() {
 
-        return "<h1>View the form for creating a post!</h1>";
+        return "<form action='/posts/create' method='post'>" +
+                "<input type='submit' value='submit'>" +
+                "</form>";
     }
 
     @PostMapping("/create")
     @ResponseBody
     public String postsCreate() {
 
-        return "create a new post";
+        return "A new post has been made";
     }
 
 }
