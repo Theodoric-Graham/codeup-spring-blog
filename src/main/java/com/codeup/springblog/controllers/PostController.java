@@ -1,7 +1,13 @@
 package com.codeup.springblog.controllers;
 
+import com.codeup.springblog.models.Item;
+import com.codeup.springblog.models.Post;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "/posts")
@@ -9,16 +15,24 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     @GetMapping()
-    @ResponseBody
-    public String viewPosts() {
-        return "<h1>This is the posts index page</h1>";
+    public String viewPosts(Model model) {
+        List<Post> posts = new ArrayList<>();
+        posts.add(new Post ("my day today", "it was pretty good"));
+        posts.add(new Post ("my day tomorrow", "it was pretty good"));
+        posts.add(new Post ("my day yesterday", "it was pretty good"));
+        model.addAttribute("posts", posts);
+
+
+        return "index";
     }
 
     @GetMapping("/{id}")
-    @ResponseBody
-    public String viewPostsById(@PathVariable long id) {
+    public String viewPostsById(@PathVariable Long id, Model model) {
+        model.addAttribute("id", id);
+        Post post = new Post("hello this is the first post", "lets see if this works");
+        model.addAttribute("post", post);
 
-        return "<h1>View an individual post, the post id is: " + id + "</h1>";
+        return "show";
     }
 
     @GetMapping("/create")
@@ -36,5 +50,6 @@ public class PostController {
 
         return "A new post has been made";
     }
+
 
 }
