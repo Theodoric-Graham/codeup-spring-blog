@@ -2,53 +2,63 @@ package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.models.Item;
 import com.codeup.springblog.models.Post;
+import com.codeup.springblog.repositories.PostRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+@AllArgsConstructor
 
 @Controller
-@RequestMapping(path = "/posts")
-
+//@RequestMapping(path = "/posts")
 public class PostController {
 
-    @GetMapping()
+    // These two next steps are often called dependency injection, where we create a Repository instance and initialize it in the controller class constructor.
+    private PostRepository postDao;
+
+    @GetMapping("/posts")
     public String viewPosts(Model model) {
-        List<Post> posts = new ArrayList<>();
-        posts.add(new Post ("my day today", "it was pretty good"));
-        posts.add(new Post ("my day tomorrow", "it was pretty good"));
-        posts.add(new Post ("my day yesterday", "it was pretty good"));
+        List<Post> posts = postDao.findAll();
         model.addAttribute("posts", posts);
 
 
         return "index";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/posts/{id}")
     public String viewPostsById(@PathVariable Long id, Model model) {
         model.addAttribute("id", id);
-        Post post = new Post("hello this is the first post", "lets see if this works");
-        model.addAttribute("post", post);
+        Optional<Post> optionalPost = postDao.findById(id);
+        if(optionalPost.isEmpty()) {
+            System.out.println("not found");
+            return "home";
+        }
+//        Post post = new Post("hello this is the first post", "lets see if this works", 1L);
+        model.addAttribute("post", optionalPost.get());
 
         return "show";
     }
 
-    @GetMapping("/create")
-    @ResponseBody
+    @GetMapping("/posts/create")
     public String viewPostsCreate() {
 
-        return "<form action='/posts/create' method='post'>" +
-                "<input type='submit' value='submit'>" +
-                "</form>";
+        return "/create";
     }
 
-    @PostMapping("/create")
-    @ResponseBody
-    public String postsCreate() {
+    @PostMapping("/posts/create")
+    public String postsCreate(@RequestParam String title, @RequestParam String body) {
+//        System.out.println(title + body);
 
-        return "A new post has been made";
+        Post post = new Post();
+        post.setTitle(title);
+        post.setBody(body);
+        postDao.save(post);
+        return "redirect:/posts";
     }
 
 

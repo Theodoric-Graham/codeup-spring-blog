@@ -1,18 +1,26 @@
 package com.codeup.springblog.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.codeup.springblog.repositories.PostRepository;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+@ToString
 
+@Entity
+@Table(name = "posts")
+public class Post {
+    @Column(nullable = false)
     private String title;
 
+    @Column(length = 1024, nullable = false)
     private String body;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
 
 }
