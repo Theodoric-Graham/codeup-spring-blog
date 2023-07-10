@@ -8,8 +8,9 @@
 </head>
 <body>
 <h1>This is the posts for id <span th:text="${id}"></span></h1>
-<span th:text="${post.getTitle()}"></span>
-<span th:text="${post.getBody()}"></span>
+<h1 th:text="${post.getTitle()}"></h1>
+<h1 th:text="${post.getBody()}"></h1>
+<h1 th:text="${post.getUser().getUsername()}"></h1>
 
 </body>
 </html>

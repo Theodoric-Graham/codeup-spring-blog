@@ -7,14 +7,14 @@
 </head>
 <body>
 
-<form method="post" action="/posts/create">
+<form th:object="${post}" th:method="post" th:action="@{/posts/create}">
   <div class="mb-3">
-    <label for="title" class="form-label">Title</label>
-    <input name="title" type="text" class="form-control" id="title" aria-describedby="emailHelp">
+    <label  for="title" class="form-label">Title</label>
+    <input th:field="*{title}" name="title" type="text" class="form-control" id="title" aria-describedby="emailHelp">
   </div>
   <div class="mb-3">
     <label for="body" class="form-label">Body</label>
-    <textarea name="body" type="text" class="form-control" id="body"></textarea>
+    <textarea th:field="*{body}" name="body" type="text" class="form-control" id="body"></textarea>
   </div>
 
   <button type="submit" class="btn btn-primary">Submit</button>
