@@ -7,6 +7,7 @@ import com.codeup.springblog.models.User;
 import com.codeup.springblog.repositories.PostRepository;
 import com.codeup.springblog.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,13 @@ public class PostController {
 
     @GetMapping("/posts")
     public String viewPosts(Model model) {
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(loggedInUser.getId() == 0) {
+            System.out.println("you are not logged in");
+        } else {
+            System.out.println(loggedInUser.getId() + " " + loggedInUser.getUsername() + " " + loggedInUser.getEmail());
+        }
+
         List<Post> posts = postDao.findAll();
         model.addAttribute("posts", posts);
 
@@ -59,11 +67,10 @@ public class PostController {
 
     @PostMapping("/posts/create")
     public String postsCreate(@ModelAttribute Post post) {
-        String title = post.getTitle();
-        String body = post.getBody();
-        User loggedInUser = userDao.findById(2L).get();
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User loggedInUser = userDao.findById(3L).get();
         post.setUser(loggedInUser);
-        emailService.prepareAndSend(post, title, body);
+//        emailService.prepareAndSend(post, title, body);
         postDao.save(post);
         return "redirect:/posts";
 
@@ -74,7 +81,6 @@ public class PostController {
         model.addAttribute("post", postDao.findById(id).get());
         return "create";
     }
-
 
 
 }
