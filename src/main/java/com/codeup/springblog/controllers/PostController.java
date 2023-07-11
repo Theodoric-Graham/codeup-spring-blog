@@ -71,22 +71,10 @@ public class PostController {
 
     @GetMapping("/posts/{id}/edit")
     public String viewPostsEdit(@PathVariable Long id, Model model) {
-        model.addAttribute("id", id);
         model.addAttribute("post", postDao.findById(id).get());
         return "create";
     }
 
-    @PostMapping("/posts/{id}/edit")
-    public String postsEdit(@ModelAttribute Post post) {
-        String title = post.getTitle();
-        String body = post.getBody();
-        User loggedInUser = userDao.findById(2L).get();
-        post.setUser(loggedInUser);
-        emailService.prepareAndSend(post, title, body);
-        postDao.save(post);
-        return "redirect:/posts";
-
-    }
 
 
 }
