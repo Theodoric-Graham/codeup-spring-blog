@@ -32,5 +32,10 @@ public class UserController {
         userDao.save(user);
         return "redirect:/login";
     }
+
+    @GetMapping("/filestack")
+    public String fileStack(){
+        return "filestack";
+    }
 }
 
