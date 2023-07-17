@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 
 </head>
 <body>
+<h1> Hello <span th:text="${user.getUsername()}"></span></h1>
 <div>
     <button class="upload">Upload file</button>
 </div>
 <div>
-    <img width="200" height="200" class="logo" />
+    <img th:src="${user.getImage()}" width="200" height="200" class="logo" />
 </div>
 </body>
 <script src="//static.filestackapi.com/filestack-js/3.x.x/filestack.min.js"></script>

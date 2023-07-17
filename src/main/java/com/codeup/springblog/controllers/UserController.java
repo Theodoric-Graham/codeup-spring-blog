@@ -2,6 +2,8 @@ package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.models.User;
 import com.codeup.springblog.repositories.UserRepository;
+import org.springframework.boot.Banner;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,9 +35,27 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @GetMapping("/filestack")
-    public String fileStack(){
-        return "filestack";
+    @GetMapping("/profile")
+    public String fileStack(Model model){
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        loggedInUser.setImage("https://cdn.filestackcontent.com/SsF5qKUTRl6yihUHYX8w");
+        model.addAttribute("user", loggedInUser);
+        System.out.println(loggedInUser.getImage());
+//        System.out.println(loggedInUser.getUsername());
+//        System.out.println(loggedInUser.getEmail());
+//        System.out.println(loggedInUser.getPassword());
+//        System.out.println(loggedInUser.getId());
+        return "profile";
     }
+
+    @PostMapping("/profile")
+    public String uploadImage(){
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+        String imageSrc = "";
+        return imageSrc;
+    }
+
 }
 

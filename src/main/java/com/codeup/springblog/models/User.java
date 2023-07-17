@@ -26,6 +26,10 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "image")
+    private String image;
+
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private List<Post> posts;
 
